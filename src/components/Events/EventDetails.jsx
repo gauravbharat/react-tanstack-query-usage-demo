@@ -8,8 +8,12 @@ import {
   queryClient,
 } from "../../util/http-service.js";
 import ErrorBlock from "..//UI/ErrorBlock.jsx";
+import Modal from "../UI/Modal.jsx";
+import { useState } from "react";
 
 export default function EventDetails() {
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+
   const params = useParams();
   const navigate = useNavigate();
   const id = params.id;
@@ -45,8 +49,34 @@ export default function EventDetails() {
   //   error,
   // });
 
+  function handleDelete() {
+    mutate(id);
+  }
+
+  function handleCloseModal() {
+    setShowDeleteConfirmation(false);
+  }
+
   return (
     <>
+      {showDeleteConfirmation && (
+        <Modal onClose={handleCloseModal}>
+          <h2>Are you sure?</h2>
+          <p>
+            Do you really want to delete this event? This action cannot be
+            undone.
+          </p>
+          <div className="form-actions">
+            <button className="button-text" onClick={handleCloseModal}>
+              Cancel
+            </button>
+            <button className="button" onClick={handleDelete}>
+              Delete
+            </button>
+          </div>
+        </Modal>
+      )}
+
       <Outlet />
       <Header>
         <Link to="/events" className="nav-item">
@@ -80,7 +110,7 @@ export default function EventDetails() {
               <nav>
                 <button
                   onClick={() => {
-                    mutate(id);
+                    setShowDeleteConfirmation(true);
                   }}
                 >
                   Delete

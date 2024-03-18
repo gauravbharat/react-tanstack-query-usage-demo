@@ -1,8 +1,9 @@
-# React + Vite
+# React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Data fetching demo using Tanstack Query (formerly React Query) demo
 
-Currently, two official plugins are available:
+### Advanced concepts:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Auto-refresh when user revisited the fetched data page,
+- Cache Invalidation,
+- Optimistic Updating & More

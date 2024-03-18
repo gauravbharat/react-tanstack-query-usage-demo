@@ -1,9 +1,9 @@
-import { Link, useNavigate, navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Modal from "../UI/Modal.jsx";
 import EventForm from "./EventForm.jsx";
 import { useMutation } from "@tanstack/react-query";
-import { createNewEvent } from "../../util/http-service.js";
+import { createNewEvent, queryClient } from "../../util/http-service.js";
 import ErrorBlock from "../UI/ErrorBlock.jsx";
 
 export default function NewEvent() {
@@ -12,6 +12,13 @@ export default function NewEvent() {
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: createNewEvent,
     onSuccess: () => {
+      // Invalidate query key (cache) to refetch events
+      // setting exact would only clear where ONLY the 'events' key is used
+      // and exclude other places where 'events' key is used along with other keys
+      queryClient.invalidateQueries({
+        queryKey: ["events"],
+        //exact: true
+      });
       navigate("/events");
     },
   });

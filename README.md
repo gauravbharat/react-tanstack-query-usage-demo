@@ -22,8 +22,13 @@
 - useMutation hook to send HTTP data (POST, PUT, PATCH, DELETE) -
   - mutationFn prop to set the HTTP send function
   - mutate to send request programmatically
+  - onMutate prop, ideally used for optimistic update. Receives the same params as mutationFn
   - onSuccess prop to execute any desired code after mutation is successful
+  - onError prop to execute any desired code after mutation is failed
+  - onSettled prop to execute any desired code regardless of whether mutation is failed or succeded
 - QueryClient >
   - invalidateQueries to clear use query cache by passing the queryKey
   - refetchType: ‘none’ disable automatic refetching after invalidations
-  - getQueriesData get cached data passing the queryKey
+  - getQueryData get cached data passing the queryKey
+  - setQueryData update cached data for the passed queryKey
+  - cancelQueries cancel any ongoing http requests for the queryKey

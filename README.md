@@ -26,3 +26,4 @@
 - QueryClient >
   - invalidateQueries to clear use query cache by passing the queryKey
   - refetchType: ‘none’ disable automatic refetching after invalidations
+  - getQueriesData get cached data passing the queryKey

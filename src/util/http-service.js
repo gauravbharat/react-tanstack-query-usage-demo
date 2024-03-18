@@ -1,5 +1,12 @@
-export async function fetchEvents() {
-  const response = await fetch("http://localhost:3000/events");
+export async function fetchEvents({ signal, searchTerm }) {
+  let url = "http://localhost:3000/events";
+
+  if (searchTerm) {
+    url = `${url}?search=${searchTerm}`;
+  }
+
+  // if the user navigates away from the component, useQuery aborts the request
+  const response = await fetch(url, { signal });
 
   if (!response.ok) {
     const error = new Error("An error occurred while fetching the events");

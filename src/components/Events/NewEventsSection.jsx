@@ -8,6 +8,8 @@ import { fetchEvents } from "../../util/http-service.js";
 export default function NewEventsSection() {
   // Important!!!: Note that, by default, useQuery would trigger a refetch each time
   // this component gets focus
+  // It would use the cached data first and query http again to fetch updated data and
+  // replace the cache
   const {
     data,
     isPending: isLoading,
@@ -16,6 +18,8 @@ export default function NewEventsSection() {
   } = useQuery({
     queryKey: ["events"],
     queryFn: fetchEvents,
+    staleTime: 5000, //time to wait till http request is fetched again when page is revisited
+    // gcTime: 30000, //clear cache (garbage collect) data after gcTime is over
   });
 
   let content;

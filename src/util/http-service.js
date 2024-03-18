@@ -2,11 +2,15 @@ import { QueryClient } from "@tanstack/react-query";
 
 export const queryClient = new QueryClient();
 
-export async function fetchEvents({ signal, searchTerm }) {
+export async function fetchEvents({ signal, searchTerm, max }) {
   let url = "http://localhost:3000/events";
 
-  if (searchTerm) {
+  if (searchTerm && max) {
+    url = `${url}?search=${searchTerm}&max=${max}`;
+  } else if (searchTerm) {
     url = `${url}?search=${searchTerm}`;
+  } else if (max) {
+    url = `${url}?max=${max}`;
   }
 
   // if the user navigates away from the component, useQuery aborts the request

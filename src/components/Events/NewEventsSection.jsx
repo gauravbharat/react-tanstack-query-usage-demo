@@ -16,8 +16,9 @@ export default function NewEventsSection() {
     isError,
     error,
   } = useQuery({
-    queryKey: ["events"],
-    queryFn: fetchEvents,
+    queryKey: ["events", { max: 3 }],
+    // queryKey is accessible in the Query Function (queryFn) as a param
+    queryFn: ({ signal, queryKey }) => fetchEvents({ signal, ...queryKey[1] }),
     staleTime: 5000, //time to wait till http request is fetched again when page is revisited
     // gcTime: 30000, //clear cache (garbage collect) data after gcTime is over
   });

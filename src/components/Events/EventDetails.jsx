@@ -17,7 +17,7 @@ export default function EventDetails() {
   console.log("EventDetails : params", params);
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: [{ id }],
+    queryKey: ["events", id],
     queryFn: ({ signal }) => fetchEvent({ signal, id }),
   });
 
@@ -29,7 +29,11 @@ export default function EventDetails() {
   } = useMutation({
     mutationFn: () => deleteEvent({ id }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["events"] });
+      queryClient.invalidateQueries({
+        queryKey: ["events"],
+        // disable automatic refetching after invalidations
+        refetchType: "none",
+      });
       navigate("/events");
     },
   });
@@ -51,8 +55,11 @@ export default function EventDetails() {
       </Header>
 
       {(isLoading || isDeleting) && (
-        <p style={{ textAlign: "center" }}>Loading event...</p>
+        <div id="event-details-content" className="center">
+          <p>{isDeleting ? "Deleting" : "Loading"} event...</p>
+        </div>
       )}
+
       {(isError || isDeleteError) && (
         <ErrorBlock
           title={`Error ${isDeleteError ? "deleting" : "fetching"} event`}
@@ -87,9 +94,13 @@ export default function EventDetails() {
             <div id="event-details-info">
               <div>
                 <p id="event-details-location">{data.location}</p>
-                <time
-                  dateTime={`Todo-DateT$Todo-Time`}
-                >{`${data.date} @ ${data.time}`}</time>
+                <time dateTime={`Todo-DateT$Todo-Time`}>{`${new Date(
+                  data.date
+                ).toLocaleDateString("en-US", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                })} @ ${data.time}`}</time>
               </div>
               <p id="event-details-description">{data.description}</p>
             </div>

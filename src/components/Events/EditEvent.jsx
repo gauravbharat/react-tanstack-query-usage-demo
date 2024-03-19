@@ -29,6 +29,10 @@ export default function EditEvent() {
   //   queryKey: ["events", id],
   // });
 
+  /** Even when the loader is called for this route, instead of using useLoaderData
+   * useQuery is kept around to use the cache and
+   * other benefits that Tanstack query provides
+   */
   const {
     data: queryData,
     isPending,
@@ -140,4 +144,14 @@ export default function EditEvent() {
         ))}
     </Modal>
   );
+}
+
+export async function editEventLoader({ params }) {
+  const id = params.id;
+
+  /** Fetch data without the useQuery hook, using the QueryClient */
+  return queryClient.fetchQuery({
+    queryKey: ["events", id],
+    queryFn: ({ signal }) => fetchEvent({ signal, id }),
+  });
 }

@@ -32,8 +32,8 @@ export default function EventDetails() {
     error: deleteError,
   } = useMutation({
     mutationFn: () => deleteEvent({ id }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: ["events"],
         // disable automatic refetching after invalidations
         refetchType: "none",
@@ -66,13 +66,19 @@ export default function EventDetails() {
             Do you really want to delete this event? This action cannot be
             undone.
           </p>
+
           <div className="form-actions">
-            <button className="button-text" onClick={handleCloseModal}>
-              Cancel
-            </button>
-            <button className="button" onClick={handleDelete}>
-              Delete
-            </button>
+            {isDeleting && <p>Deleting...</p>}
+            {!isDeleting && (
+              <>
+                <button className="button-text" onClick={handleCloseModal}>
+                  Cancel
+                </button>
+                <button className="button" onClick={handleDelete}>
+                  Delete
+                </button>
+              </>
+            )}
           </div>
         </Modal>
       )}

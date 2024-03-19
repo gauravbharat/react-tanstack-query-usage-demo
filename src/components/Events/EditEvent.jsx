@@ -41,6 +41,7 @@ export default function EditEvent() {
   } = useQuery({
     queryKey: ["events", id],
     queryFn: ({ signal }) => fetchEvent({ signal, id }),
+    staleTime: 10000, //10 seconds, to use cache data without refetching within 10 seconds
   });
 
   // console.log("EditEvent : getQueriesData", queryId, queryData);
